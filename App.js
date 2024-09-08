@@ -11,20 +11,21 @@ import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
 import { Provider as AuthProvider }  from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
+import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 
 const AuthStack = createStackNavigator();
 const LoginFlow = () => (
-  <AuthStack.Navigator>
+  <AuthStack.Navigator initialRouteName="Signup">
     <AuthStack.Screen name = "Signup" component = {SignupScreen} options={{ headerShown: false }} />
-    <AuthStack.Screen name = "SignIn" component = {SigninScreen}/>
+    <AuthStack.Screen name = "SignIn" component = {SigninScreen} options={{ headerShown: false }}/>
   </AuthStack.Navigator>
 );
 
 const TrackStack = createStackNavigator();
 const TrackListFlow = () => (
   <TrackStack.Navigator >
-    <TrackStack.Screen name = "TrackList" component = {TrackListScreen}/>
-    <TrackStack.Screen name = "TrackDetail" component = {TrackDetailScreen}/>
+    <TrackStack.Screen name = "TrackList" component = {TrackListScreen} options={{ headerShown: false }}/>
+    <TrackStack.Screen name = "TrackDetail" component = {TrackDetailScreen} />
   </TrackStack.Navigator>
 );
 
@@ -37,7 +38,7 @@ const MainFlow = () => (
       options={{ headerShown: false }}
     />
     <BottomTab.Screen name = "Create Track" component={TrackCreateDetail}/>
-    <BottomTab.Screen name = "Account" component={AccountScreen}/>
+    <BottomTab.Screen name = "Account" component={AccountScreen} options={{ headerShown: false }}/>
   </BottomTab.Navigator>
 );
 
@@ -56,9 +57,10 @@ export default function App() {
   return (
     <AuthProvider>
       <NavigationContainer ref={navRef}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Back" component = {LoginFlow}/>
-          <Stack.Screen name="Main Flow" component = {MainFlow}/>
+        <Stack.Navigator initialRouteName="Default" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name='Default' component = {ResolveAuthScreen} />
+          <Stack.Screen name="Login Flow" component = {LoginFlow} options={{ headerShown: false }} />
+          <Stack.Screen name="Main Flow" component = {MainFlow} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

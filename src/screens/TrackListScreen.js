@@ -4,7 +4,7 @@ import {View, StyleSheet, Text, Button} from 'react-native';
 
 const TrackListScreen = ({ navigation }) => {
     return (
-        <View>
+        <View style = {styles.Container}>
             <Text>TrackListScreen</Text>
             <Button
                 title="go to track detail"
@@ -14,6 +14,14 @@ const TrackListScreen = ({ navigation }) => {
     );
 };
 
-const styles = StyleSheet.create ({});
+const styles = StyleSheet.create ({
+    
+    Container:{ 
+        flex:1,
+        justifyContent: "center",
+        marginBottom: 200
+    }, 
+    
+});
 
 export default TrackListScreen;
