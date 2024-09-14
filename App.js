@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 import AccountScreen from './src/screens/AccountScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import SigninScreen from './src/screens/SigninScreen';
@@ -10,6 +10,8 @@ import TrackCreateDetail from './src/screens/TrackCreateScreen';
 import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
 import { Provider as AuthProvider }  from './src/context/AuthContext';
+import { Provider as LocationProvider } from './src/context/LocationContext';
+import { Provider as TrackProvider } from './src/context/TrackContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 
@@ -32,12 +34,8 @@ const TrackListFlow = () => (
 const BottomTab = createBottomTabNavigator();
 const MainFlow = () => (
   <BottomTab.Navigator>
-    <BottomTab.Screen 
-      name = "Tracks" 
-      component={TrackListFlow}
-      options={{ headerShown: false }}
-    />
-    <BottomTab.Screen name = "Create Track" component={TrackCreateDetail}/>
+    <BottomTab.Screen name = "Tracks" component={TrackListFlow} options={{ headerShown: false }}/>
+    <BottomTab.Screen name = "Create Track" component={TrackCreateDetail} options={{ headerShown: false }}/>
     <BottomTab.Screen name = "Account" component={AccountScreen} options={{ headerShown: false }}/>
   </BottomTab.Navigator>
 );
@@ -55,15 +53,22 @@ export default function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      <NavigationContainer ref={navRef}>
-        <Stack.Navigator initialRouteName="Default" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name='Default' component = {ResolveAuthScreen} />
-          <Stack.Screen name="Login Flow" component = {LoginFlow} options={{ headerShown: false }} />
-          <Stack.Screen name="Main Flow" component = {MainFlow} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+    <TrackProvider>
+      <LocationProvider>
+      <AuthProvider>
+        <View style={{ flex: 1 }}>
+          <StatusBar barStyle="dark-content" backgroundColor="black" />
+            <NavigationContainer ref={navRef}>
+              <Stack.Navigator initialRouteName="Default" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name='Default' component = {ResolveAuthScreen} />
+                <Stack.Screen name="Login Flow" component = {LoginFlow} options={{ headerShown: false }} />
+                <Stack.Screen name="Main Flow" component = {MainFlow} />
+              </Stack.Navigator>
+            </NavigationContainer>
+        </View>
+      </AuthProvider>
+    </LocationProvider>
+    </TrackProvider>
     
   );
 }
