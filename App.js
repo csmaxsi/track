@@ -14,6 +14,8 @@ import { Provider as LocationProvider } from './src/context/LocationContext';
 import { Provider as TrackProvider } from './src/context/TrackContext';
 import { setNavigator } from './src/navigationRef';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const AuthStack = createStackNavigator();
 const LoginFlow = () => (
@@ -27,16 +29,43 @@ const TrackStack = createStackNavigator();
 const TrackListFlow = () => (
   <TrackStack.Navigator >
     <TrackStack.Screen name = "TrackList" component = {TrackListScreen} options={{ headerShown: false }}/>
-    <TrackStack.Screen name = "TrackDetail" component = {TrackDetailScreen} />
+    <TrackStack.Screen name = "Track Details" component = {TrackDetailScreen} />
   </TrackStack.Navigator>
 );
 
 const BottomTab = createBottomTabNavigator();
 const MainFlow = () => (
   <BottomTab.Navigator>
-    <BottomTab.Screen name = "Tracks" component={TrackListFlow} options={{ headerShown: false }}/>
-    <BottomTab.Screen name = "Create Track" component={TrackCreateDetail} options={{ headerShown: false }}/>
-    <BottomTab.Screen name = "Account" component={AccountScreen} options={{ headerShown: false }}/>
+    <BottomTab.Screen 
+      name = "Tracks" 
+      component={TrackListFlow} 
+      options={{
+        tabBarIcon: () => (
+          <FontAwesome name="road" size={24} color="black" />
+        )
+      }}  
+    />
+    <BottomTab.Screen 
+      name = "Create Track" 
+      component={TrackCreateDetail} 
+      options={{ 
+        headerShown: true, 
+        tabBarIcon: () => (
+          <FontAwesome name="plus" size={24} color="black" />
+        ) 
+      }}
+
+    />
+    <BottomTab.Screen 
+      name = "Account" 
+      component={AccountScreen} 
+      options={{ 
+        headerShown: true,
+        tabBarIcon: () =>(
+          <MaterialCommunityIcons name="account" size={24} color="black" />
+        ) 
+      }}  
+    />
   </BottomTab.Navigator>
 );
 

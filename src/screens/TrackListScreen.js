@@ -1,17 +1,53 @@
-import React from "react";
-import {View, StyleSheet, Text, Button} from 'react-native';
+import React, { useContext, useEffect } from "react";
+import {View, StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
+import { Context as TrackContext } from "../context/TrackContext";
+import { useNavigation } from "@react-navigation/native";
+import { ListItem, Icon } from "react-native-elements";
+import { SafeAreaView } from "react-native";
 
 
-const TrackListScreen = ({ navigation }) => {
+const TrackListScreen = () => {
+    const { state, fetchTracks } = useContext(TrackContext);
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const unsubscribeFocus = navigation.addListener('focus', fetchTracks);
+        
+        return () => {
+          // Clean up the event listeners
+          unsubscribeFocus();
+        };
+      }, [navigation]);
+    
+   
+
     return (
-        <View style = {styles.Container}>
-            <Text>TrackListScreen</Text>
-            <Button
-                title="go to track detail"
-                onPress={() => navigation.navigate('TrackDetail')}
+        <SafeAreaView forceInsert={{ top: 'always'}}>
+            <FlatList
+                data = {state}
+                keyExtractor={ item => item._id }
+                renderItem={({ item }) => {
+                    return (
+                        <TouchableOpacity onPress={() => {
+                                navigation.navigate('TrackDetail', { _id: item._id})
+                            }}
+                        >
+                            <ListItem bottomDivider>
+                                <ListItem.Content>
+                                    <ListItem.Title>{item.name}</ListItem.Title>
+                                </ListItem.Content>
+                                <Icon name="chevron-right" />
+                            </ListItem>
+                        </TouchableOpacity>
+                    );
+                }}
             />
-        </View>
+        </SafeAreaView>
     );
+};
+
+TrackListScreen.navigationOptions = {
+    title: 'Tracks'
 };
 
 const styles = StyleSheet.create ({

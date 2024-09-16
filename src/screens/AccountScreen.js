@@ -10,9 +10,9 @@ const AccountScreen = () => {
     const { signout } = useContext(AuthContext);
     return (
         <SafeAreaView>
-            <Text>AccountScreen</Text>
-            <Button
             
+            <Button
+                style={styles.btn}
                 title="Sign Out"
                 onPress={signout}
             />
@@ -20,6 +20,13 @@ const AccountScreen = () => {
     );
 };
 
-const styles = StyleSheet.create ({});
+const styles = StyleSheet.create ({
+    btn:{
+        
+        marginTop:100,
+        marginLeft:30,
+        marginRight:30
+    }
+});
 
 export default AccountScreen;

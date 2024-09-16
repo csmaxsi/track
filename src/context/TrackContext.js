@@ -11,8 +11,14 @@ const trackReducer = ( state, action) => {
 };
 
 const fetchTracks = dispatch => async () => {
-    const response = await trackerApi.get('/tracks');
-    dispatch({ type: 'fetch_tracks', payload: response.data });
+    
+    try {
+        const response = await trackerApi.get('/tracks');
+        dispatch({ type: 'fetch_tracks', payload: response.data });
+    } catch (err) {
+        console.error("Failed to fetch tracks:", err);
+        // You might want to dispatch an error state or show an error message to the user
+    }
 };
 const createTracks = dispatch => async ( name, locations) => {
     await trackerApi.post('/tracks', { name, locations});
